@@ -1,5 +1,5 @@
-variable "aws_region" {
-  description = "Región de AWS donde se creará el bootstrap y la infraestructura"
+﻿variable "aws_region" {
+  description = "RegiÃ³n de AWS donde se crearÃ¡ el bootstrap y la infraestructura"
   type        = string
   default     = "us-east-1"
 }
@@ -11,25 +11,27 @@ variable "project_name" {
 }
 
 variable "github_owner" {
-  description = "Usuario u organización de GitHub autorizado para asumir el rol OIDC desde cualquiera de sus repositorios"
+  description = "Usuario u organizaciÃ³n de GitHub autorizado para asumir el rol OIDC desde cualquiera de sus repositorios"
   type        = string
-  default     = "llorld43-gif"
+  default     = "eliana327"
 }
 
 variable "github_owner_id" {
-  description = "ID numérico del usuario u organización de GitHub (para el formato inmutable del claim sub)"
+  description = "ID numÃ©rico del usuario u organizaciÃ³n de GitHub (para el formato inmutable del claim sub)"
   type        = string
-  default     = "307716463"
+  default     = "327581358"
 }
 
 variable "github_repo" {
-  description = "(Opcional/Legacy) Repositorio específico de GitHub en formato 'usuario/repo'"
+  description = "(Opcional/Legacy) Repositorio especÃ­fico de GitHub en formato 'usuario/repo'"
   type        = string
-  default     = "llorld43-gif/*"
+  default     = "eliana327/*"
 }
 
 variable "github_branch" {
-  description = "Rama principal que ejecutará el pipeline de despliegue"
+  description = "Rama principal que ejecutarÃ¡ el pipeline de despliegue"
   type        = string
   default     = "main"
 }
+
+

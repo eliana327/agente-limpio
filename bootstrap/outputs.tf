@@ -1,4 +1,4 @@
-# ==============================================================================
+﻿# ==============================================================================
 # Outputs de la Fase de Bootstrap
 # ==============================================================================
 
@@ -18,6 +18,7 @@ output "terraform_lock_table" {
 }
 
 output "aws_region" {
-  description = "Región de AWS configurada"
+  description = "RegiÃ³n de AWS configurada"
   value       = var.aws_region
 }
+

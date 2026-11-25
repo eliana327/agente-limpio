@@ -1,8 +1,8 @@
+﻿# ==============================================================================
+# Fase de Bootstrap: ConfiguraciÃ³n OIDC para GitHub Actions y Backend Remoto
 # ==============================================================================
-# Fase de Bootstrap: Configuración OIDC para GitHub Actions y Backend Remoto
-# ==============================================================================
-# Esta fase se ejecuta una ÚNICA VEZ antes de configurar el pipeline de CI/CD.
-# Elimina el uso de credenciales estáticas (AWS Access Keys) usando tokens JWT.
+# Esta fase se ejecuta una ÃšNICA VEZ antes de configurar el pipeline de CI/CD.
+# Elimina el uso de credenciales estÃ¡ticas (AWS Access Keys) usando tokens JWT.
 # ==============================================================================
 
 terraform {
@@ -32,7 +32,7 @@ resource "random_string" "suffix" {
 # ------------------------------------------------------------------------------
 # 1. PROVEEDOR OPENID CONNECT (OIDC) PARA GITHUB ACTIONS
 # ------------------------------------------------------------------------------
-# Huella digital oficial del certificado SSL raíz de GitHub Actions
+# Huella digital oficial del certificado SSL raÃ­z de GitHub Actions
 resource "aws_iam_openid_connect_provider" "github_oidc" {
   url = "https://token.actions.githubusercontent.com"
 
@@ -55,7 +55,7 @@ resource "aws_iam_openid_connect_provider" "github_oidc" {
 }
 
 # ------------------------------------------------------------------------------
-# 2. ROL IAM ASUMIDO POR EL PIPELINE (Sin credenciales estáticas)
+# 2. ROL IAM ASUMIDO POR EL PIPELINE (Sin credenciales estÃ¡ticas)
 # ------------------------------------------------------------------------------
 resource "aws_iam_role" "github_actions_role" {
   name = "${var.project_name}-github-oidc-role"
@@ -73,7 +73,7 @@ resource "aws_iam_role" "github_actions_role" {
           StringEquals = {
             "token.actions.githubusercontent.com:aud" = "sts.amazonaws.com"
           }
-          # Permite todos los repositorios del propietario en GitHub (formato estándar e inmutable)
+          # Permite todos los repositorios del propietario en GitHub (formato estÃ¡ndar e inmutable)
           StringLike = {
             "token.actions.githubusercontent.com:sub" = [
               "repo:${var.github_owner}/*:*",
@@ -92,7 +92,7 @@ resource "aws_iam_role" "github_actions_role" {
   }
 }
 
-# Política de permisos para que el pipeline gestione la infraestructura serverless
+# PolÃ­tica de permisos para que el pipeline gestione la infraestructura serverless
 resource "aws_iam_policy" "pipeline_policy" {
   name        = "${var.project_name}-pipeline-policy"
   description = "Permisos necesarios para desplegar Serverless (S3, DynamoDB, Lambda, Cognito, API Gateway, CloudFront)"
@@ -100,37 +100,37 @@ resource "aws_iam_policy" "pipeline_policy" {
   policy = jsonencode({
     Version = "2012-10-17"
     Statement = [
-      # Gestión de S3 (Backend remoto y Frontend)
+      # GestiÃ³n de S3 (Backend remoto y Frontend)
       {
         Effect   = "Allow"
         Action   = ["s3:*"]
         Resource = ["*"]
       },
-      # Gestión de DynamoDB (Citas y State Locking)
+      # GestiÃ³n de DynamoDB (Citas y State Locking)
       {
         Effect   = "Allow"
         Action   = ["dynamodb:*"]
         Resource = ["*"]
       },
-      # Gestión de AWS Lambda
+      # GestiÃ³n de AWS Lambda
       {
         Effect   = "Allow"
         Action   = ["lambda:*"]
         Resource = ["*"]
       },
-      # Gestión de API Gateway v2
+      # GestiÃ³n de API Gateway v2
       {
         Effect   = "Allow"
         Action   = ["apigateway:*"]
         Resource = ["*"]
       },
-      # Gestión de Amazon Cognito
+      # GestiÃ³n de Amazon Cognito
       {
         Effect   = "Allow"
         Action   = ["cognito-idp:*"]
         Resource = ["*"]
       },
-      # Gestión de CloudFront
+      # GestiÃ³n de CloudFront
       {
         Effect   = "Allow"
         Action   = [
@@ -155,7 +155,7 @@ resource "aws_iam_policy" "pipeline_policy" {
         ]
         Resource = ["*"]
       },
-      # Gestión de Roles IAM del proyecto
+      # GestiÃ³n de Roles IAM del proyecto
       {
         Effect   = "Allow"
         Action   = [
@@ -178,7 +178,7 @@ resource "aws_iam_policy" "pipeline_policy" {
         ]
         Resource = ["arn:aws:iam::*:role/${var.project_name}-*"]
       },
-      # Gestión de Políticas IAM administradas del proyecto
+      # GestiÃ³n de PolÃ­ticas IAM administradas del proyecto
       {
         Effect   = "Allow"
         Action   = [
@@ -201,7 +201,7 @@ resource "aws_iam_policy" "pipeline_policy" {
         Action   = ["ses:*"]
         Resource = ["*"]
       },
-      # Gestión de Red, Cómputo EC2, Auto Scaling, Balanceadores y CloudWatch
+      # GestiÃ³n de Red, CÃ³mputo EC2, Auto Scaling, Balanceadores y CloudWatch
       {
         Effect = "Allow"
         Action = [
@@ -213,7 +213,7 @@ resource "aws_iam_policy" "pipeline_policy" {
         ]
         Resource = ["*"]
       },
-      # Lectura de parámetros SSM (ej. AMI oficiales de Amazon Linux)
+      # Lectura de parÃ¡metros SSM (ej. AMI oficiales de Amazon Linux)
       {
         Effect = "Allow"
         Action = [
@@ -229,7 +229,7 @@ resource "aws_iam_policy" "pipeline_policy" {
         Action   = ["iam:CreateServiceLinkedRole"]
         Resource = ["arn:aws:iam::*:role/aws-service-role/*"]
       },
-      # Gestión de Roles e Instance Profiles para proyectos adicionales (ej. autoscaling)
+      # GestiÃ³n de Roles e Instance Profiles para proyectos adicionales (ej. autoscaling)
       {
         Effect = "Allow"
         Action = [
@@ -301,7 +301,7 @@ resource "aws_s3_bucket_server_side_encryption_configuration" "tf_state" {
   }
 }
 
-# Bloqueo total de acceso público
+# Bloqueo total de acceso pÃºblico
 resource "aws_s3_bucket_public_access_block" "tf_state" {
   bucket = aws_s3_bucket.tf_state.id
 
@@ -333,3 +333,4 @@ resource "aws_dynamodb_table" "tf_locks" {
     Environment = "Bootstrap"
   }
 }
+
